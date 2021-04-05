@@ -1,5 +1,14 @@
+/*
+* Author : Fam Xuan Deng
+* Purpose :
+* A Sample Scheme Wizard's Content Component with only save method implemented
+*
+* Revision     	Ref Number      	Release No      	Modified Date       Modified By        	Description
+* --------     	----------      	----------      	-----------         ------------        -----------
+* 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
+*
+*/
 import { LightningElement, api } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class SampleWizardPathB extends LightningElement {
 
@@ -8,6 +17,7 @@ export default class SampleWizardPathB extends LightningElement {
         sample: ''
     }
 
+    //Input Change Handler
     changeAge(event){
         this.data.age = event.detail.value
         let ageInput = this.template.querySelector("lightning-input.age");
@@ -15,6 +25,7 @@ export default class SampleWizardPathB extends LightningElement {
         ageInput.reportValidity();
     }
 
+    //Input Change Handler
     changeSample(event){
         this.data.sample = event.detail.value
         let sampleInput = this.template.querySelector("lightning-input.sample");
@@ -22,9 +33,10 @@ export default class SampleWizardPathB extends LightningElement {
         sampleInput.reportValidity();
     }
 
+    //Public Save Method
     @api 
     save(){
-        //Validation
+
         let response = {
             validation: false,
             save:false
@@ -41,7 +53,7 @@ export default class SampleWizardPathB extends LightningElement {
                 ageInput.setCustomValidity("Age Cannot be greater than 30");
             }
         }
-        ageInput.reportValidity();
+        ageInput.reportValidity()
 
         //Sample Input Validation
         let sampleCharacterValidation = this.data.sample && this.data.sample.length >= 5
@@ -56,14 +68,16 @@ export default class SampleWizardPathB extends LightningElement {
             //If Validation Failed
             this.dispatchSaveEvent(response)
         }else{
-            //If Validation Success, Proceed to Saving
+            //Validation Success
             response.validation = true
             this.mockSaveApex()
                 .then(res => {
+                    //Saving Success
                     response.save = true
                     this.dispatchSaveEvent(response)
                 })
                 .catch(err => {
+                    //Saving Failed
                     this.dispatchSaveEvent(response)
                 })
         }

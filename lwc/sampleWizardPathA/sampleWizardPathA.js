@@ -1,5 +1,14 @@
+/*
+* Author : Fam Xuan Deng
+* Purpose :
+* A Sample Scheme Wizard's Content Component with initialize and save method implemented
+*
+* Revision     	Ref Number      	Release No      	Modified Date       Modified By        	Description
+* --------     	----------      	----------      	-----------         ------------        -----------
+* 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
+*
+*/
 import { LightningElement, api, track } from 'lwc';
-import { ShowToastEvent } from 'lightning/platformShowToastEvent';
 
 export default class SampleWizardPathA extends LightningElement {
 
@@ -13,50 +22,51 @@ export default class SampleWizardPathA extends LightningElement {
         this.data.name = event.detail.value
     }
     
+    //Public Initialize Method
     @api
     initialize(){
         this.mockRetrieveApex()
             .then(data => {
                 this.data.name = data.name
-                this.dispatchEvent(new CustomEvent('initialize', {}))
+                this.isInitialized = true
             })
             .catch(err => {
+                console.error(err)
+            })
+            .finally(() => {
+                //Notify c-scheme-wizard on method completion
                 this.dispatchEvent(new CustomEvent('initialize', {}))
             })
-            
     }
 
+    //Public Save Method
     @api 
     async save(){
         let response = {
             validation: false,
             save:false
         }
+        //Validation Logic
         const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
             .reduce((validSoFar, inputField) => {
                 inputField.reportValidity();
                 return validSoFar && inputField.checkValidity();
             }, true);
 
-        //Validation Success
         if(isInputsCorrect){
+            //Validation Success
             response.validation = true
             try{
+                //Saving Success
                 let save = await this.mockSaveApex()
-                //Save Success
                 response.save = true
             }catch(error){
-                //Save Failed
+                //Saving Failed
                 response.save = false
-                this.dispatchEvent(new ShowToastEvent({
-                    title: 'Saving Failed',
-                    message: 'Saving Error',
-                    variant: 'error'
-                }))
+                console.error(error)
             }
         }
-
-        //Validation Failed
+        //Notify c-scheme-wizard on method completion
         this.dispatchSaveEvent(response)
     }
 

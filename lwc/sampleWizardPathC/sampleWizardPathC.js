@@ -1,3 +1,13 @@
+/*
+* Author : Fam Xuan Deng
+* Purpose :
+* A Sample Scheme Wizard's Content Component with only initialize method implemented
+*
+* Revision     	Ref Number      	Release No      	Modified Date       Modified By        	Description
+* --------     	----------      	----------      	-----------         ------------        -----------
+* 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
+*
+*/
 import { LightningElement, api, track } from 'lwc';
 
 export default class SampleWizardPathC extends LightningElement {
@@ -8,6 +18,7 @@ export default class SampleWizardPathC extends LightningElement {
         age: ''
     }
 
+    //Public Initialize Method
     @api 
     async initialize(){
         let data = await this.mockRetrieveApex()
