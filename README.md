@@ -1,4 +1,4 @@
-###schemeWizard.html
+### schemeWizard.html
 In your scheme wizard html it should:
 ```html
 <div class="content">
