@@ -24,5 +24,5 @@ In the sample path components provided, each of them are having slight differenc
 | Sample Path Component  | initialize() | save() |
 | ------------ | ------------ | ------------ |
 | A | ✅  (.then)| ✅  (async, await)|
-| B | ❌ (No Apex)| ✅ (.then)|
+| B | ✅ (No Apex)| ✅ (.then)|
 | C | ✅  (async, await) | ❌ |
