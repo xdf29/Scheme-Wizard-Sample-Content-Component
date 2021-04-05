@@ -8,7 +8,8 @@ In your scheme wizard html it should:
 	</c-sample-wizard-path-a>
 	
 	<c-sample-wizard-path-b 
-		class='slds-hide' onsave={onSaveHandler} >
+		class='slds-hide' oninitialize={onInitialize} 
+		onsave={onSaveHandler} >
 	</c-sample-wizard-path-b>
 	
 	<c-sample-wizard-path-c 
@@ -23,5 +24,5 @@ In the sample path components provided, each of them are having slight differenc
 | Sample Path Component  | initialize() | save() |
 | ------------ | ------------ | ------------ |
 | A | ✅  (.then)| ✅  (async, await)|
-| B | ❌ | ✅ (.then)|
+| B | ❌ (No Apex)| ✅ (.then)|
 | C | ✅  (async, await) | ❌ |

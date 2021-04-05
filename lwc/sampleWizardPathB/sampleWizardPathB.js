@@ -17,6 +17,17 @@ export default class SampleWizardPathB extends LightningElement {
         sample: ''
     }
 
+    @api 
+    initialize(){
+        //Clear Input Error 
+        let inputs = this.template.querySelectorAll("lightning-input");
+        inputs.forEach(input => {
+            input.setCustomValidity("");
+            input.reportValidity();
+        });
+        this.dispatchEvent(new CustomEvent('initialize', {}));
+    }
+
     //Input Change Handler
     changeAge(event){
         this.data.age = event.detail.value
