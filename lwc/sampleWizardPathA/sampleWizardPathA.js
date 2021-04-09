@@ -6,7 +6,7 @@
 * Revision     	Ref Number      	Release No      	Modified Date       Modified By        	Description
 * --------     	----------      	----------      	-----------         ------------        -----------
 * 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
-*
+* 1.1          	PCS 841         	July2021           	8-April-2021	    Fam Xuan Deng			Modified         
 */
 import { LightningElement, api, track } from 'lwc';
 
@@ -14,9 +14,9 @@ export default class SampleWizardPathA extends LightningElement {
 
     @track
     data = {
-        name: ''
-    }
-
+        name: 'XD'
+    } 
+    
     //Form Handler
     changeName(event){
         this.data.name = event.detail.value
@@ -28,7 +28,6 @@ export default class SampleWizardPathA extends LightningElement {
         this.mockRetrieveApex()
             .then(data => {
                 this.data.name = data.name
-                this.isInitialized = true
             })
             .catch(err => {
                 console.error(err)
@@ -39,40 +38,38 @@ export default class SampleWizardPathA extends LightningElement {
             })
     }
 
-    //Public Save Method
+    @api
+    getData(){
+        return this.data
+    }
+
     @api 
-    async save(){
-        let response = {
-            validation: false,
-            save:false
-        }
+    validation(){
         //Validation Logic
         const isInputsCorrect = [...this.template.querySelectorAll('lightning-input')]
             .reduce((validSoFar, inputField) => {
                 inputField.reportValidity();
                 return validSoFar && inputField.checkValidity();
             }, true);
-
-        if(isInputsCorrect){
-            //Validation Success
-            response.validation = true
-            try{
-                //Saving Success
-                let save = await this.mockSaveApex()
-                response.save = true
-            }catch(error){
-                //Saving Failed
-                response.save = false
-                console.error(error)
-            }
-        }
-        //Notify c-scheme-wizard on method completion
-        this.dispatchSaveEvent(response)
+        return isInputsCorrect
     }
 
-    dispatchSaveEvent(response){
+    //Public Save Method
+    @api 
+    async save(){
+        let save = false
+        try{
+            //Saving Success
+            await this.mockSaveApex()
+            console.log('A Saving')
+            save = true
+        }catch(error){
+            console.error(error)
+        }
+        
+        //Notify c-scheme-wizard on method completion  
         this.dispatchEvent(new CustomEvent('save', {
-            detail: response
+            detail: save
         }))
     }
 

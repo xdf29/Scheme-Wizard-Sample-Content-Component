@@ -6,7 +6,7 @@
 * Revision     	Ref Number      	Release No      	Modified Date       Modified By        	Description
 * --------     	----------      	----------      	-----------         ------------        -----------
 * 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
-*
+* 1.1          	PCS 841         	July2021           	8-April-2021	    Fam Xuan Deng			Modified         
 */
 import { LightningElement, api } from 'lwc';
 
@@ -15,17 +15,6 @@ export default class SampleWizardPathB extends LightningElement {
     data = {
         age: '',
         sample: ''
-    }
-
-    @api 
-    initialize(){
-        //Clear Input Error 
-        let inputs = this.template.querySelectorAll("lightning-input");
-        inputs.forEach(input => {
-            input.setCustomValidity("");
-            input.reportValidity();
-        });
-        this.dispatchEvent(new CustomEvent('initialize', {}));
     }
 
     //Input Change Handler
@@ -44,15 +33,19 @@ export default class SampleWizardPathB extends LightningElement {
         sampleInput.reportValidity();
     }
 
-    //Public Save Method
     @api 
-    save(){
+    initialize(){
+        //Clear Input Error 
+        let inputs = this.template.querySelectorAll("lightning-input");
+        inputs.forEach(input => {
+            input.setCustomValidity("");
+            input.reportValidity();
+        });
+        this.dispatchEvent(new CustomEvent('initialize', {}));
+    }
 
-        let response = {
-            validation: false,
-            save:false
-        }
-
+    @api 
+    validation(){
         //Age Input Validation
         let ageBlankValidation = !this.data.age
         let ageMaxValidation = this.data.age && this.data.age >= 30
@@ -74,24 +67,38 @@ export default class SampleWizardPathB extends LightningElement {
         }
         sampleInput.reportValidity();
 
-
         if(ageBlankValidation || ageMaxValidation || sampleCharacterValidation){
-            //If Validation Failed
-            this.dispatchSaveEvent(response)
+            return false
         }else{
-            //Validation Success
-            response.validation = true
-            this.mockSaveApex()
-                .then(res => {
-                    //Saving Success
-                    response.save = true
-                    this.dispatchSaveEvent(response)
-                })
-                .catch(err => {
-                    //Saving Failed
-                    this.dispatchSaveEvent(response)
-                })
+            return true
         }
+    }
+
+    @api
+    getData(){
+        return this.data
+    }
+
+    //Public Save Method
+    @api 
+    save(){
+        let save = false
+
+        this.mockSaveApex()
+            .then(res => {
+                console.log('B Saving')
+                //Saving Success
+                save = true
+            })
+            .catch(err => {
+                //Saving Failed
+                console.error(err)
+            })
+            .finally(() => {
+                this.dispatchEvent(new CustomEvent('save', {
+                    detail: save
+                }))
+            })
     }
 
     mockSaveApex(){

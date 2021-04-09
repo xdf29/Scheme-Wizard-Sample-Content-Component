@@ -6,34 +6,33 @@
 * Revision     	Ref Number      	Release No      	Modified Date       Modified By        	Description
 * --------     	----------      	----------      	-----------         ------------        -----------
 * 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
-*
+* 1.1          	PCS 841         	July2021           	8-April-2021	    Fam Xuan Deng			Modified         
 */
 import { LightningElement, api, track } from 'lwc';
 
 export default class SampleWizardPathC extends LightningElement {
 
     @track
-    data = {
-        name: '',
-        age: ''
-    }
+    _allData
 
-    //Public Initialize Method
-    @api 
-    async initialize(){
-        let data = await this.mockRetrieveApex()
-        this.data.name = data.name
-        this.data.age = data.age
-        this.dispatchEvent(new CustomEvent('initialize', {}))
-    }
+    //Scheme Info Data
+    schemeInfoData
 
-    //Mock Apex Retrieve 
-    //Delete & Do not use this in actual implementation
-    mockRetrieveApex(){
-        return new Promise(function(resolve, reject) {
-            setTimeout(() => {
-                resolve({id: 12345, name: 'Sample Name Retrieve', age: 123})
-            }, 3000);
-        });
+    //Scheme Products Data
+    schemeProductData
+
+    @api
+    get allData(){
+        return this._allData
+    }
+    set allData(value){
+        this._allData = value
+        this._allData.forEach(data => {
+            if(data.path === 'SchemeInfo'){
+                this.schemeInfoData = data.data
+            }else if(data.path === 'SchemeProducts'){
+                this.schemeProductData = data.data
+            }
+        })
     }
 }

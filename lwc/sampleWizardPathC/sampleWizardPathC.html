@@ -1,4 +1,7 @@
 <template>
-    <lightning-input type="text" variant="standard" name="name" label="Name" value={data.name} read-only></lightning-input>
-    <lightning-input type="number" variant="standard" name="age" label="Age" value={data.age} read-only></lightning-input>
+    <template if:true={allData}>
+        <lightning-input type="text" variant="standard" name="name" label="Name" value={schemeInfoData.name} read-only></lightning-input>
+        <lightning-input type="number" variant="standard" name="age" label="Age" value={schemeProductData.age} read-only></lightning-input>
+    </template>
 </template>
+
