@@ -8,10 +8,14 @@
 * 1.0          	PCS 841         	July2021           	30-Mar-2021			Fam Xuan Deng			Created
 * 1.1          	PCS 841         	July2021           	8-April-2021	    Fam Xuan Deng			Modified         
 */
-import { LightningElement, api } from 'lwc';
+import { LightningElement, api, track } from 'lwc';
 
 export default class SampleWizardPathB extends LightningElement {
 
+    @api
+    schemeId
+
+    @track
     data = {
         age: '',
         sample: ''

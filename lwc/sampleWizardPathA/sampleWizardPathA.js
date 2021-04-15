@@ -12,6 +12,9 @@ import { LightningElement, api, track } from 'lwc';
 
 export default class SampleWizardPathA extends LightningElement {
 
+    @api
+    schemeId
+
     @track
     data = {
         name: 'XD'
